@@ -1,6 +1,10 @@
 require("dotenv").config();
 
-const useSqlite = process.env.DB_DIALECT === "sqlite" || process.env.NODE_ENV !== "production";
+const isProd = process.env.NODE_ENV === "production";
+const hasDatabaseUrl = Boolean(process.env.DATABASE_URL);
+const useSqlite =
+  process.env.DB_DIALECT === "sqlite" ||
+  (!isProd && !process.env.DB_DIALECT);
 
 const base = {
   seederStorage: "sequelize",
@@ -26,13 +30,26 @@ module.exports = {
     storage: ":memory:"
   },
   production: {
-    ...base,
-    dialect: "postgres",
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT || 5432),
-    database: process.env.DB_NAME,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS
+    ...(hasDatabaseUrl
+      ? {
+          ...base,
+          use_env_variable: "DATABASE_URL",
+          dialect: "postgres",
+          dialectOptions: {
+            ssl: process.env.DB_SSL === "true" ? { require: true, rejectUnauthorized: false } : undefined
+          }
+        }
+      : {
+          ...base,
+          dialect: "postgres",
+          host: process.env.DB_HOST,
+          port: Number(process.env.DB_PORT || 5432),
+          database: process.env.DB_NAME,
+          username: process.env.DB_USER,
+          password: process.env.DB_PASS,
+          dialectOptions: {
+            ssl: process.env.DB_SSL === "true" ? { require: true, rejectUnauthorized: false } : undefined
+          }
+        })
   }
 };
-
