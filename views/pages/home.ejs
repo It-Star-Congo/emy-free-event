@@ -1,0 +1,124 @@
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="container hero-inner">
+    <div>
+      <p class="kicker">Spécialiste concerts</p>
+      <h1>LOCATION DE MATÉRIEL DE SONORISATION</h1>
+      <p>
+        ÉCOUTE, CONSEIL ET PLANIFICATION. INSTALLATION ET MAINTENANCE DE MATÉRIEL DE SONORISATION ET LUMIÈRE.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/devis">Demande de devis</a>
+        <a class="btn btn-wa" target="_blank" rel="noreferrer" href="https://wa.me/<%= whatsappPhone %>?text=Bonjour%20EMY%20FREE%20EVENT">WhatsApp</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Réponse rapide</h3>
+      <p>Appelez-nous: <a href="tel:+2250707022425">+225 07 07 02 24 25</a></p>
+      <p>Disponibles 7j/7 pour vos événements live.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Nos services</h2>
+    <div class="grid cols-3">
+      <article class="card">
+        <div class="card-media"><div class="card-media-placeholder">Image service</div></div>
+        <h3>Location de matériel</h3>
+        <p>Parc sonorisation, lumière, vidéo, scène et énergie pour tous formats de concerts.</p>
+      </article>
+      <article class="card">
+        <div class="card-media"><div class="card-media-placeholder">Image service</div></div>
+        <h3>Écoute, conseil et planification</h3>
+        <p>Accompagnement technique sur-mesure selon votre audience, lieu et budget.</p>
+      </article>
+      <article class="card">
+        <div class="card-media"><div class="card-media-placeholder">Image service</div></div>
+        <h3>Installation et maintenance</h3>
+        <p>Montage, réglage et supervision par une équipe technique expérimentée.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-head">
+      <h2>Packs concerts</h2>
+      <a href="/packs-concerts">Voir tous les packs</a>
+    </div>
+    <div class="grid cols-3">
+      <% packs.forEach((pack) => { %>
+      <article class="card pack-card">
+        <div class="card-media">
+          <% if (pack.images && pack.images.length) { %>
+          <img src="<%= pack.images[0] %>" alt="<%= pack.name %>" />
+          <% } else { %>
+          <div class="card-media-placeholder">Image pack</div>
+          <% } %>
+        </div>
+        <span class="badge"><%= pack.audienceSize %></span>
+        <h3><%= pack.name %></h3>
+        <p><%= pack.includedText %></p>
+        <strong><%= Number(pack.pricePerDay).toLocaleString("fr-FR") %> FCFA / jour</strong>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Matériel populaire</h2>
+      <a href="/catalogue">Ouvrir le catalogue</a>
+    </div>
+    <div class="grid cols-3">
+      <% products.forEach((product) => { %>
+      <article class="card">
+        <div class="card-media">
+          <% if (product.images && product.images.length) { %>
+          <img src="<%= product.images[0] %>" alt="<%= product.name %>" />
+          <% } else { %>
+          <div class="card-media-placeholder">Image produit</div>
+          <% } %>
+        </div>
+        <small class="muted"><%= product.category %></small>
+        <h3><%= product.name %></h3>
+        <p><%= product.description %></p>
+        <div class="card-row">
+          <strong><%= Number(product.pricePerDay).toLocaleString("fr-FR") %> FCFA/j</strong>
+          <a href="/produit/<%= product.slug %>">Détails</a>
+        </div>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-head">
+      <h2>Réalisations récentes</h2>
+      <a href="/realisations">Voir plus</a>
+    </div>
+    <div class="grid cols-3">
+      <% realisations.forEach((item) => { %>
+      <article class="card">
+        <div class="card-media">
+          <% if (item.image) { %>
+          <img src="<%= item.image %>" alt="<%= item.title %>" />
+          <% } else { %>
+          <div class="card-media-placeholder">Image réalisation</div>
+          <% } %>
+        </div>
+        <h3><%= item.title %></h3>
+        <p><%= item.description %></p>
+        <small class="muted"><%= item.location %> - <%= item.eventDate || "" %></small>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>

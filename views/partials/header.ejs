@@ -1,0 +1,29 @@
+﻿<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="/">
+      <img
+        class="brand-logo"
+        src="/uploads/logo-emy-free-event.svg"
+        alt="Logo EMY FREE EVENT"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"
+      />
+      <span class="brand-logo-fallback" style="display:none;">EFE</span>
+      <span>EMY FREE EVENT</span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" type="button">Menu</button>
+    <nav class="main-nav" id="mainNav">
+      <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Accueil</a>
+      <a href="/services" class="<%= currentPath.startsWith('/services') ? 'active' : '' %>">Services</a>
+      <a href="/packs-concerts" class="<%= currentPath === '/packs-concerts' ? 'active' : '' %>">Packs concerts</a>
+      <a href="/catalogue" class="<%= currentPath.startsWith('/catalogue') || currentPath.startsWith('/produit') ? 'active' : '' %>">Catalogue</a>
+      <a href="/realisations" class="<%= currentPath === '/realisations' ? 'active' : '' %>">Realisations</a>
+      <a href="/devis" class="<%= currentPath.startsWith('/devis') ? 'active' : '' %>">Demande de devis</a>
+      <a href="/checkout" class="<%= currentPath.startsWith('/checkout') ? 'active' : '' %>">Paiement panier (<%= cartCount %>)</a>
+      <a href="/contact" class="<%= currentPath === '/contact' ? 'active' : '' %>">Contact</a>
+    </nav>
+    <div class="quick-cta">
+      <a class="btn btn-ghost" href="tel:+2250707022425">Appeler</a>
+      <a class="btn btn-wa" target="_blank" rel="noreferrer" href="https://wa.me/<%= whatsappPhone %>">WhatsApp</a>
+    </div>
+  </div>
+</header>

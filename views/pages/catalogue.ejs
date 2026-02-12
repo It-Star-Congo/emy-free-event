@@ -1,0 +1,57 @@
+<section class="section top-offset">
+  <div class="container">
+    <h1>Catalogue de matériel</h1>
+    <form class="filters" method="get" action="/catalogue">
+      <select name="category">
+        <option value="">Toutes catégories</option>
+        <% categories.forEach((c) => { %>
+        <option value="<%= c %>" <%= filters.category === c ? "selected" : "" %>><%= c %></option>
+        <% }) %>
+      </select>
+      <input type="text" name="q" placeholder="Recherche..." value="<%= filters.q || '' %>" />
+      <input type="number" name="minPrice" placeholder="Prix min" value="<%= filters.minPrice || '' %>" />
+      <input type="number" name="maxPrice" placeholder="Prix max" value="<%= filters.maxPrice || '' %>" />
+      <input type="text" name="power" placeholder="Puissance (ex: 1200W)" value="<%= filters.power || '' %>" />
+      <label><input type="checkbox" name="dispo" value="1" <%= filters.dispo === "1" ? "checked" : "" %> /> Disponible</label>
+      <button class="btn btn-primary" type="submit">Filtrer</button>
+    </form>
+
+    <div class="grid cols-3">
+      <% products.forEach((product) => { %>
+      <article
+        class="card interactive-card js-quick-card"
+        data-product-id="<%= product.id %>"
+        data-title="<%= product.name %>"
+        data-category="<%= product.category %>"
+        data-description="<%= product.description %>"
+        data-price="<%= Number(product.pricePerDay).toLocaleString('fr-FR') %>"
+        data-power="<%= product.power || 'N/A' %>"
+        data-link="/produit/<%= product.slug %>"
+        data-image="<%= product.images && product.images.length ? product.images[0] : '' %>"
+      >
+        <div class="card-media">
+          <% if (product.images && product.images.length) { %>
+          <img src="<%= product.images[0] %>" alt="<%= product.name %>" />
+          <% } else { %>
+          <div class="card-media-placeholder">Image produit</div>
+          <% } %>
+        </div>
+        <small class="muted"><%= product.category %></small>
+        <h3><%= product.name %></h3>
+        <p><%= product.description %></p>
+        <p>Puissance: <%= product.power || "N/A" %></p>
+        <strong><%= Number(product.pricePerDay).toLocaleString("fr-FR") %> FCFA / jour</strong>
+        <div class="card-row">
+          <button type="button" class="btn btn-ghost js-open-quick-view">Apercu rapide</button>
+          <form method="post" action="/devis/panier/ajouter">
+            <input type="hidden" name="productId" value="<%= product.id %>" />
+            <input type="hidden" name="quantity" value="1" />
+            <input type="hidden" name="next" value="/catalogue<%= Object.keys(filters || {}).length ? '?' : '' %><%= new URLSearchParams(filters || {}).toString() %>" />
+            <button class="btn btn-ghost" type="submit">Ajouter au devis</button>
+          </form>
+        </div>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+<section class="section top-offset">
+  <div class="container narrow">
+    <h1>Connexion admin</h1>
+    <% if (error) { %><p class="error"><%= error %></p><% } %>
+    <form method="post" action="/admin/login" class="card form-card">
+      <label>Email<input type="email" name="email" required /></label>
+      <label>Mot de passe<input type="password" name="password" required /></label>
+      <button class="btn btn-primary" type="submit">Se connecter</button>
+    </form>
+  </div>
+</section>
+

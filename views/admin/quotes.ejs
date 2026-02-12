@@ -1,0 +1,28 @@
+<section class="section top-offset">
+  <div class="container">
+    <h1>Demandes de devis</h1>
+    <div class="card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th><th>Client</th><th>Téléphone</th><th>Événement</th><th>Date</th><th>Statut</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% quotes.forEach((q) => { %>
+          <tr>
+            <td>#<%= q.id %></td>
+            <td><%= q.customerName %></td>
+            <td><%= q.phone %></td>
+            <td><%= q.eventType %></td>
+            <td><%= q.eventDate %></td>
+            <td><%= q.status %></td>
+            <td><a href="/admin/devis/<%= q.id %>">Détails</a></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+

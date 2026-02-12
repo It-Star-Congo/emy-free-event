@@ -1,0 +1,18 @@
+<section class="section top-offset">
+  <div class="container">
+    <h1>Calendrier / disponibilités</h1>
+    <p class="lead">Module optionnel prêt: réservations stockées dans la table <code>reservations</code>.</p>
+    <div class="card">
+      <% if (!reservations.length) { %>
+      <p>Aucune réservation enregistrée.</p>
+      <% } %>
+      <% reservations.forEach((r) => { %>
+      <article class="card">
+        <p><strong>Période:</strong> <%= r.startDate %> au <%= r.endDate %></p>
+        <p><strong>Statut:</strong> <%= r.status %></p>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+

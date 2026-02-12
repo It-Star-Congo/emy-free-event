@@ -1,0 +1,23 @@
+<section class="section top-offset">
+  <div class="container narrow">
+    <h1>Paiement commande #<%= order.id %></h1>
+    <p class="lead">Page de paiement (mode demo). Branchez ici CinetPay/Stripe/Flutterwave en production.</p>
+
+    <article class="card">
+      <p><strong>Montant:</strong> <%= Number(order.totalAmount).toLocaleString("fr-FR") %> <%= order.currency %></p>
+      <p><strong>Client:</strong> <%= order.customerName %></p>
+      <p><strong>Statut:</strong> <%= transaction.status %></p>
+      <div class="hero-actions">
+        <form method="post" action="/checkout/payer/<%= order.id %>/confirm">
+          <input type="hidden" name="token" value="<%= transaction.checkoutToken %>" />
+          <button class="btn btn-primary" type="submit">Simuler paiement reussi</button>
+        </form>
+        <form method="post" action="/checkout/payer/<%= order.id %>/cancel">
+          <input type="hidden" name="token" value="<%= transaction.checkoutToken %>" />
+          <button class="btn btn-danger" type="submit">Annuler</button>
+        </form>
+      </div>
+    </article>
+  </div>
+</section>
+

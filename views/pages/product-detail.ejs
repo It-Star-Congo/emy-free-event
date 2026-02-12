@@ -1,0 +1,16 @@
+<section class="section top-offset">
+  <div class="container narrow">
+    <small class="muted"><%= product.category %></small>
+    <h1><%= product.name %></h1>
+    <p><%= product.description %></p>
+    <p>Puissance: <%= product.power || "N/A" %></p>
+    <p>Caution: <%= Number(product.deposit).toLocaleString("fr-FR") %> FCFA</p>
+    <h3><%= Number(product.pricePerDay).toLocaleString("fr-FR") %> FCFA / jour</h3>
+    <form method="post" action="/devis/panier/ajouter" class="inline-form">
+      <input type="hidden" name="productId" value="<%= product.id %>" />
+      <input type="hidden" name="next" value="/produit/<%= product.slug %>" />
+      <input type="number" name="quantity" min="1" value="1" />
+      <button class="btn btn-primary" type="submit">Ajouter au panier de devis</button>
+    </form>
+  </div>
+</section>

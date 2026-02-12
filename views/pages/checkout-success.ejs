@@ -1,0 +1,71 @@
+<section class="section top-offset">
+  <div class="container narrow">
+    <h1>Paiement confirme</h1>
+    <p>Commande #<strong><%= order.id %></strong> payee avec succes.</p>
+    <p>Montant: <strong><%= Number(order.totalAmount).toLocaleString("fr-FR") %> <%= order.currency %></strong></p>
+    <p class="muted" id="emailStatus">
+      Envoi email via EmailJS en cours...
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/catalogue">Continuer</a>
+      <a class="btn btn-ghost" href="/checkout/invoice/<%= order.id %>?token=<%= encodeURIComponent((typeof invoiceToken !== 'undefined' ? invoiceToken : '') || '') %>">Telecharger la facture</a>
+      <a class="btn btn-wa" href="https://wa.me/<%= whatsappPhone %>?text=Bonjour%20j%27ai%20regle%20la%20commande%20%23<%= order.id %>" target="_blank" rel="noreferrer">Informer sur WhatsApp</a>
+    </div>
+  </div>
+</section>
+<script>
+  (function () {
+    const statusEl = document.getElementById("emailStatus");
+    if (!statusEl) return;
+
+    const email = "<%= (order.email || "").replace(/"/g, "&quot;") %>";
+    const token = "<%= encodeURIComponent((typeof invoiceToken !== 'undefined' ? invoiceToken : '') || '') %>";
+    if (!email) {
+      statusEl.textContent = "Aucun email client renseigne. Utilisez le bouton de telechargement facture.";
+      return;
+    }
+    if (!token) {
+      statusEl.textContent = "Token facture manquant. Utilisez le bouton de telechargement facture.";
+      return;
+    }
+
+    const invoiceUrl = `${window.location.origin}/checkout/invoice/<%= order.id %>?token=${token}`;
+    const emailjsServiceId = "<%= typeof emailjsServiceId !== 'undefined' ? emailjsServiceId : 'service_eip0lei' %>";
+    const emailjsTemplateId = "<%= typeof emailjsTemplateId !== 'undefined' ? emailjsTemplateId : 'template_7izxe49' %>";
+    const emailjsUserId = "<%= typeof emailjsUserId !== 'undefined' ? emailjsUserId : '0itHGT0RE2JJZzn8U' %>";
+    const payload = {
+      service_id: emailjsServiceId,
+      template_id: emailjsTemplateId,
+      user_id: emailjsUserId,
+      template_params: {
+        name: "<%= (order.customerName || "").replace(/"/g, "&quot;") %>",
+        contact: email,
+        subject: "Facture commande #<%= order.id %> - EMY FREE EVENT",
+        message: `Paiement confirme pour la commande #<%= order.id %>. Telechargez votre facture: ${invoiceUrl}`
+      }
+    };
+
+    const sendKey = `emailjs_invoice_sent_<%= order.id %>`;
+    if (window.localStorage.getItem(sendKey) === "1") {
+      statusEl.textContent = "Email facture deja envoye depuis ce navigateur.";
+      return;
+    }
+
+    fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const txt = await res.text();
+          throw new Error(txt || `HTTP ${res.status}`);
+        }
+        window.localStorage.setItem(sendKey, "1");
+        statusEl.textContent = "Facture envoyee par email avec succes.";
+      })
+      .catch((err) => {
+        statusEl.textContent = `Email non envoye automatiquement (${err.message}). Utilisez le bouton de telechargement facture.`;
+      });
+  })();
+</script>

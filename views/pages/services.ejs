@@ -1,0 +1,16 @@
+<section class="section top-offset">
+  <div class="container">
+    <h1>Services EMY FREE EVENT</h1>
+    <p class="lead">Des solutions techniques complètes pour des concerts fiables et impactants.</p>
+    <div class="grid cols-3">
+      <% services.forEach((item) => { %>
+      <article class="card">
+        <div class="card-media"><div class="card-media-placeholder">Image service</div></div>
+        <h3><%= item.title %></h3>
+        <p><%= item.content %></p>
+        <a href="/services/<%= item.slug %>">En savoir plus</a>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>

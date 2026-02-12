@@ -1,0 +1,24 @@
+<section class="section top-offset">
+  <div class="container">
+    <h1>Packs concerts</h1>
+    <p class="lead">Choisissez une base prête à déployer selon la taille de votre audience.</p>
+    <div class="grid cols-3">
+      <% packs.forEach((pack) => { %>
+      <article class="card pack-card">
+        <div class="card-media">
+          <% if (pack.images && pack.images.length) { %>
+          <img src="<%= pack.images[0] %>" alt="<%= pack.name %>" />
+          <% } else { %>
+          <div class="card-media-placeholder">Image pack</div>
+          <% } %>
+        </div>
+        <span class="badge"><%= pack.audienceSize %></span>
+        <h3><%= pack.name %></h3>
+        <p><%= pack.includedText %></p>
+        <p><strong>Options:</strong> <%= pack.optionsText %></p>
+        <strong><%= Number(pack.pricePerDay).toLocaleString("fr-FR") %> FCFA / jour</strong>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>

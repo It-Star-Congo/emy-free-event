@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= typeof title !== "undefined" ? title : "EMY FREE EVENT" %></title>
+    <meta
+      name="description"
+      content="EMY FREE EVENT - Location de matériel de sonorisation, lumière et solutions techniques pour concerts."
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <%- include("../partials/header") %>
+    <main class="site-main"><%- body %></main>
+    <div class="quick-view-modal" id="quickViewModal" aria-hidden="true">
+      <div class="quick-view-overlay" data-close-modal></div>
+      <section class="quick-view-panel" role="dialog" aria-modal="true" aria-labelledby="quickViewTitle">
+        <button class="quick-view-close" type="button" data-close-modal>Fermer</button>
+        <div class="quick-view-grid">
+          <div class="quick-view-media" id="quickViewMedia"></div>
+          <div class="quick-view-content">
+            <p class="muted" id="quickViewCategory"></p>
+            <h2 id="quickViewTitle"></h2>
+            <p id="quickViewDescription"></p>
+            <p><strong>Puissance:</strong> <span id="quickViewPower"></span></p>
+            <p><strong>Prix:</strong> <span id="quickViewPrice"></span> FCFA / jour</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" id="quickViewLink" href="#">Voir la fiche complete</a>
+              <form method="post" action="/devis/panier/ajouter" class="inline-form" id="quickViewAddForm">
+                <input type="hidden" name="productId" id="quickViewProductId" value="" />
+                <input type="hidden" name="next" id="quickViewNext" value="/catalogue" />
+                <input type="number" name="quantity" min="1" value="1" aria-label="Quantite" />
+                <button class="btn btn-ghost" type="submit">Ajouter au devis</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <%- include("../partials/footer") %>
+    <script src="/js/main.js"></script>
+  </body>
+  </html>

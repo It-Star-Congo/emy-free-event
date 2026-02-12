@@ -1,0 +1,11 @@
+<section class="section top-offset">
+  <div class="container narrow">
+    <h1>Paiement annule</h1>
+    <p>La tentative de paiement <%= order ? "de la commande #" + order.id : "" %> a ete annulee.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/checkout">Reessayer</a>
+      <a class="btn btn-ghost" href="/catalogue">Retour catalogue</a>
+    </div>
+  </div>
+</section>
+

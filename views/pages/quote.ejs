@@ -1,0 +1,106 @@
+<section class="section top-offset">
+  <div class="container">
+    <h1>Demande de devis</h1>
+    <p class="lead">Formulaire multi-étapes + panier de matériel.</p>
+
+    <div class="stepper">
+      <span class="<%= step === 1 ? 'active' : '' %>">1. Contact</span>
+      <span class="<%= step === 2 ? 'active' : '' %>">2. Événement</span>
+      <span class="<%= step === 3 ? 'active' : '' %>">3. Besoins</span>
+    </div>
+
+    <% if (step === 1) { %>
+    <form method="post" action="/devis/step" class="card form-card">
+      <input type="hidden" name="step" value="1" />
+      <label>Nom complet<input required name="customerName" value="<%= quoteDraft.customerName || '' %>" /></label>
+      <label>Téléphone<input required name="phone" value="<%= quoteDraft.phone || '' %>" /></label>
+      <label>Email<input type="email" name="email" value="<%= quoteDraft.email || '' %>" /></label>
+      <button class="btn btn-primary" type="submit">Étape suivante</button>
+    </form>
+    <% } %>
+
+    <% if (step === 2) { %>
+    <form method="post" action="/devis/step" class="card form-card">
+      <input type="hidden" name="step" value="2" />
+      <label>Type d'événement
+        <select required name="eventType">
+          <option value="">Choisir...</option>
+          <option <%= quoteDraft.eventType === "Concert" ? "selected" : "" %>>Concert</option>
+          <option <%= quoteDraft.eventType === "Festival" ? "selected" : "" %>>Festival</option>
+          <option <%= quoteDraft.eventType === "Corporate" ? "selected" : "" %>>Corporate</option>
+          <option <%= quoteDraft.eventType === "Privé" ? "selected" : "" %>>Privé</option>
+        </select>
+      </label>
+      <label>Date<input required type="date" name="eventDate" value="<%= quoteDraft.eventDate || '' %>" /></label>
+      <label>Lieu<input required name="location" value="<%= quoteDraft.location || '' %>" /></label>
+      <label>Audience estimée<input type="number" min="0" name="audience" value="<%= quoteDraft.audience || '' %>" /></label>
+      <label>Pack concert
+        <select name="packId">
+          <option value="">Aucun pack</option>
+          <% packs.forEach((pack) => { %>
+          <option value="<%= pack.id %>" <%= Number(quoteDraft.packId) === pack.id ? "selected" : "" %>>
+            <%= pack.name %> - <%= pack.audienceSize %>
+          </option>
+          <% }) %>
+        </select>
+      </label>
+      <button class="btn btn-primary" type="submit">Étape suivante</button>
+    </form>
+    <% } %>
+
+    <% if (step === 3) { %>
+    <form method="post" action="/devis/step" class="card form-card">
+      <input type="hidden" name="step" value="3" />
+      <label><input type="checkbox" name="needs" value="Sonorisation" /> Sonorisation</label>
+      <label><input type="checkbox" name="needs" value="Lumière" /> Lumière</label>
+      <label><input type="checkbox" name="needs" value="Vidéo" /> Vidéo</label>
+      <label><input type="checkbox" name="needs" value="Scène" /> Scène</label>
+      <label><input type="checkbox" name="needs" value="Énergie" /> Énergie</label>
+      <label><input type="checkbox" name="installation" value="1" /> Installation</label>
+      <label><input type="checkbox" name="technicienSon" value="1" /> Technicien son</label>
+      <label><input type="checkbox" name="technicienLumiere" value="1" /> Technicien lumière</label>
+      <label>Heure début<input type="time" name="heureDebut" /></label>
+      <label>Heure fin<input type="time" name="heureFin" /></label>
+      <label>Notes<textarea name="notes" rows="4"></textarea></label>
+      <button class="btn btn-primary" type="submit">Sauvegarder étape</button>
+    </form>
+
+    <form class="card form-card" method="post" action="/devis/submit" enctype="multipart/form-data">
+      <h3>Finaliser</h3>
+      <label>Upload rider technique (optionnel)<input type="file" name="rider" /></label>
+      <button class="btn btn-wa" type="submit">Envoyer la demande de devis</button>
+    </form>
+    <% } %>
+
+    <section class="quote-cart">
+      <h2>Panier de devis</h2>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/checkout">Payer ce panier</a>
+      </div>
+      <% if (!cart.length) { %>
+      <p>Aucun article. Ajoutez des produits depuis le catalogue.</p>
+      <% } %>
+      <% cart.forEach((item) => { %>
+      <article class="card cart-item">
+        <div>
+          <h4><%= item.name %></h4>
+          <p><%= Number(item.pricePerDay).toLocaleString("fr-FR") %> FCFA/jour</p>
+        </div>
+        <div class="cart-actions">
+          <form method="post" action="/devis/panier/update" class="inline-form">
+            <input type="hidden" name="productId" value="<%= item.productId %>" />
+            <input type="hidden" name="next" value="/devis<%= step ? '?step=' + step : '' %>" />
+            <input type="number" min="1" name="quantity" value="<%= item.quantity %>" />
+            <button class="btn btn-ghost" type="submit">Modifier</button>
+          </form>
+          <form method="post" action="/devis/panier/retirer">
+            <input type="hidden" name="productId" value="<%= item.productId %>" />
+            <input type="hidden" name="next" value="/devis<%= step ? '?step=' + step : '' %>" />
+            <button class="btn btn-danger" type="submit">Retirer</button>
+          </form>
+        </div>
+      </article>
+      <% }) %>
+    </section>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+<section class="section top-offset">
+  <div class="container">
+    <h1>Paiement du panier</h1>
+    <p class="lead">Validez vos articles et lancez le paiement securise.</p>
+    <% if (error) { %><p class="error">Nom et telephone obligatoires.</p><% } %>
+
+    <div class="checkout-grid">
+      <article class="card">
+        <h2>Coordonnees client</h2>
+        <form method="post" action="/checkout/start" class="form-card">
+          <label>Nom complet<input name="customerName" required /></label>
+          <label>Telephone<input name="phone" required /></label>
+          <label>Email<input type="email" name="email" /></label>
+          <button class="btn btn-primary" type="submit" <%= !cart.length ? "disabled" : "" %>>
+            Proceder au paiement
+          </button>
+        </form>
+      </article>
+
+      <article class="card">
+        <h2>Recapitulatif panier</h2>
+        <% if (!cart.length) { %>
+        <p>Votre panier est vide.</p>
+        <a class="btn btn-ghost" href="/catalogue">Retour catalogue</a>
+        <% } %>
+        <% cart.forEach((item) => { %>
+        <div class="summary-row">
+          <span><%= item.name %> x<%= item.quantity %></span>
+          <strong><%= Number(item.pricePerDay * item.quantity).toLocaleString("fr-FR") %> FCFA</strong>
+        </div>
+        <% }) %>
+        <div class="summary-row">
+          <strong>Total</strong>
+          <strong><%= Number(total).toLocaleString("fr-FR") %> FCFA</strong>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+

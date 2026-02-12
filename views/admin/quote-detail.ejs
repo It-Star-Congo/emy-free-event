@@ -1,0 +1,35 @@
+<section class="section top-offset">
+  <div class="container narrow">
+    <h1>Devis #<%= quote.id %></h1>
+    <div class="card">
+      <p><strong>Client:</strong> <%= quote.customerName %></p>
+      <p><strong>Téléphone:</strong> <%= quote.phone %></p>
+      <p><strong>Email:</strong> <%= quote.email || '-' %></p>
+      <p><strong>Événement:</strong> <%= quote.eventType %></p>
+      <p><strong>Date:</strong> <%= quote.eventDate %></p>
+      <p><strong>Lieu:</strong> <%= quote.location %></p>
+      <p><strong>Audience:</strong> <%= quote.audience || '-' %></p>
+      <p><strong>Besoins:</strong> <%= quote.needs.join(", ") %></p>
+      <p><strong>Matériel:</strong></p>
+      <ul>
+        <% quote.itemsJson.forEach((item) => { %>
+        <li><%= item.name %> x<%= item.quantity %></li>
+        <% }) %>
+      </ul>
+      <p><strong>Pack:</strong> <%= quote.Pack ? quote.Pack.name : "Aucun" %></p>
+      <p><strong>Rider:</strong> <%= quote.riderFile || "Non fourni" %></p>
+    </div>
+
+    <form method="post" action="/admin/devis/<%= quote.id %>/status" class="inline-form">
+      <select name="status">
+        <option <%= quote.status === "nouveau" ? "selected" : "" %> value="nouveau">nouveau</option>
+        <option <%= quote.status === "en_cours" ? "selected" : "" %> value="en_cours">en_cours</option>
+        <option <%= quote.status === "valide" ? "selected" : "" %> value="valide">valide</option>
+        <option <%= quote.status === "archive" ? "selected" : "" %> value="archive">archive</option>
+      </select>
+      <button class="btn btn-primary" type="submit">Changer statut</button>
+      <a class="btn btn-ghost" href="/admin/devis/<%= quote.id %>/export-pdf">Exporter PDF</a>
+    </form>
+  </div>
+</section>
+

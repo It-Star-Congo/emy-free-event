@@ -1,0 +1,42 @@
+<section class="section top-offset">
+  <div class="container">
+    <h1>Gestion des produits</h1>
+    <form method="post" action="/admin/produits" class="card form-card" enctype="multipart/form-data">
+      <h3>Nouveau produit</h3>
+      <label>Nom<input name="name" required /></label>
+      <label>Catégorie
+        <select name="category" required>
+          <option>Son</option><option>Lumière</option><option>Vidéo</option><option>Scène</option><option>Énergie</option><option>Accessoires</option>
+        </select>
+      </label>
+      <label>Description<textarea name="description" rows="3" required></textarea></label>
+      <label>Prix / jour<input type="number" name="pricePerDay" required /></label>
+      <label>Caution<input type="number" name="deposit" /></label>
+      <label>Puissance<input name="power" /></label>
+      <label>URL image<input name="images" placeholder="/uploads/exemple.jpg" /></label>
+      <label>Ou fichier image<input type="file" name="imageFile" /></label>
+      <label><input type="checkbox" name="isActive" value="1" checked /> Actif</label>
+      <button class="btn btn-primary" type="submit">Créer</button>
+    </form>
+
+    <% products.forEach((p) => { %>
+    <article class="card">
+      <form method="post" action="/admin/produits/<%= p.id %>/update" class="form-grid" enctype="multipart/form-data">
+        <input name="name" value="<%= p.name %>" required />
+        <input name="category" value="<%= p.category %>" required />
+        <input type="number" step="0.01" name="pricePerDay" value="<%= p.pricePerDay %>" />
+        <input type="number" step="0.01" name="deposit" value="<%= p.deposit %>" />
+        <input name="power" value="<%= p.power || '' %>" />
+        <input name="images" value="<%= p.images?.[0] || '' %>" />
+        <input type="file" name="imageFile" />
+        <textarea name="description" rows="2"><%= p.description %></textarea>
+        <label><input type="checkbox" name="isActive" value="1" <%= p.isActive ? "checked" : "" %> /> Actif</label>
+        <button class="btn btn-ghost" type="submit">Mettre à jour</button>
+      </form>
+      <form method="post" action="/admin/produits/<%= p.id %>/delete">
+        <button class="btn btn-danger" type="submit">Supprimer</button>
+      </form>
+    </article>
+    <% }) %>
+  </div>
+</section>

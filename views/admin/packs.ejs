@@ -1,0 +1,34 @@
+<section class="section top-offset">
+  <div class="container">
+    <h1>Gestion des packs</h1>
+    <form method="post" action="/admin/packs" class="card form-card" enctype="multipart/form-data">
+      <h3>Nouveau pack</h3>
+      <label>Nom<input name="name" required /></label>
+      <label>Audience<input name="audienceSize" required placeholder="200 pers / 500 pers / 1000+" /></label>
+      <label>Contenu<textarea name="includedText" rows="3" required></textarea></label>
+      <label>Prix / jour<input type="number" name="pricePerDay" required /></label>
+      <label>Options<textarea name="optionsText" rows="2"></textarea></label>
+      <label>URL image<input name="images" placeholder="/uploads/pack.jpg" /></label>
+      <label>Ou fichier image<input type="file" name="imageFile" /></label>
+      <button class="btn btn-primary" type="submit">Créer</button>
+    </form>
+
+    <% packs.forEach((pack) => { %>
+    <article class="card">
+      <form method="post" action="/admin/packs/<%= pack.id %>/update" class="form-grid" enctype="multipart/form-data">
+        <input name="name" value="<%= pack.name %>" required />
+        <input name="audienceSize" value="<%= pack.audienceSize %>" required />
+        <input type="number" name="pricePerDay" value="<%= pack.pricePerDay %>" required />
+        <input name="images" value="<%= pack.images?.[0] || '' %>" />
+        <input type="file" name="imageFile" />
+        <textarea name="includedText" rows="2"><%= pack.includedText %></textarea>
+        <textarea name="optionsText" rows="2"><%= pack.optionsText || '' %></textarea>
+        <button class="btn btn-ghost" type="submit">Mettre à jour</button>
+      </form>
+      <form method="post" action="/admin/packs/<%= pack.id %>/delete">
+        <button class="btn btn-danger" type="submit">Supprimer</button>
+      </form>
+    </article>
+    <% }) %>
+  </div>
+</section>
